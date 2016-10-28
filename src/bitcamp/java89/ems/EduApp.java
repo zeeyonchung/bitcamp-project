@@ -3,16 +3,58 @@ package bitcamp.java89.ems;
 import java.util.Scanner;
 
 public class EduApp {
+
+  static Instructor[] instrs = new Instructor[100];
+  static int length = 0;
+  static Scanner keyScan = new Scanner(System.in);
+  //static 붙여 클래스 변수로 만들기 - 아래 메소드들에서 사용 가능
+  //인스턴스 변수는 따로 만듦. 스태틱 변수는 한 번 생성, 공유.
+
+
   public static void main(String[] args) {
     System.out.println("비트캠프 관리 시스템에 오신 걸 환영합니다.");
 
-    Instructor[] instrs = new Instructor[100];
-    int length = 0; //레퍼런스 배열에 몇 명의 강사 정보를 저장했는지 개수를 지정
-                    //레퍼런스 배열에 몇 개의 Instructor 인스턴스가 들어있는지 그 개수를 보관
+    loop:
+    while (true) {
+      System.out.print("명령> ");
+      String command = keyScan.nextLine().toLowerCase();
 
-    Scanner keyScan = new Scanner(System.in);
+      switch (command) {
+      case "add" : doAdd(); break;
+      case "list" : doList(); break;
+      case "view" : doView(); break; //스위치문 빠져나감
+      case "quit" :
+        System.out.println("Good bye!");
+        break loop;
+      default:
+        System.out.println("지원하지 않는 명령어입니다.");
+      }
+    }
 
-    //반복해서 입력 받는다.
+  }
+
+
+
+  static void doList() {
+    //Instructor instr = null;
+    for (int i = 0; i < length; i ++) {
+      Instructor instr = instrs[i];
+      System.out.printf("%s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+        instr.name,
+        instr.lectureName,
+        instr.jobCareer,
+        instr.lectureCareer,
+        instr.book,
+        instr.school,
+        instr.appraisal,
+        instr.webSite,
+        instr.prize);
+
+    }
+  }
+
+
+  static void doAdd() {
     while (length < instrs.length) {
       Instructor instr = new Instructor();
 
@@ -50,35 +92,26 @@ public class EduApp {
         break;
       }
     }
-
-    printInstructorList(instrs, length);
   }
 
-  static void printInstructorList(Instructor[] instrs, int length) {
-    //Instructor instr = null;
-    for (int i = 0; i < length; i ++) {
-      Instructor instr = instrs[i];
-      System.out.printf("%s, %s, %s, %s, %s, %s, %s, %s, %s\n",
-        instr.name,
-        instr.lectureName,
-        instr.jobCareer,
-        instr.lectureCareer,
-        instr.book,
-        instr.school,
-        instr.appraisal,
-        instr.webSite,
-        instr.prize);
 
-        // System.out.printf("이름: %s\n", instr.name);
-        // System.out.printf("담당강의: %s\n", instr.lectureName);
-        // System.out.printf("회사경력: %s\n", instr.jobCareer);
-        // System.out.printf("강의경력: %s\n", instr.lectureCareer);
-        // System.out.printf("저서: %s\n", instr.book);
-        // System.out.printf("학력: %s\n", instr.school);
-        // System.out.printf("강의평가: %s\n", instr.appraisal);
-        // System.out.printf("웹사이트: %s\n", instr.webSite);
-        // System.out.printf("수상내역: %s\n", instr.prize);
-
+  static void doView() {
+    System.out.println("조회할 강사님의 성함을 입력하세요.");
+    String instructorName = keyScan.nextLine().toLowerCase();
+    for (int i = 0; i < length; i++) {
+      if ( instrs[i].name.toLowerCase().equals(instructorName) ) {
+        System.out.printf("이름: %s\n", instrs[i].name);
+        System.out.printf("담당강의: %s\n", instrs[i].lectureName);
+        System.out.printf("회사경력: %s\n", instrs[i].jobCareer);
+        System.out.printf("강의경력: %s\n", instrs[i].lectureCareer);
+        System.out.printf("저서: %s\n", instrs[i].book);
+        System.out.printf("학력: %s\n", instrs[i].school);
+        System.out.printf("강의평가: %s\n", instrs[i].appraisal);
+        System.out.printf("웹사이트: %s\n", instrs[i].webSite);
+        System.out.printf("수상내역: %s\n", instrs[i].prize);
+        break;//가장 가까운 반복문 for 나감
+      }
     }
   }
+
 }
