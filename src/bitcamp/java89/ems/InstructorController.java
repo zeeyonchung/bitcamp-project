@@ -85,10 +85,10 @@ public class InstructorController {
         System.out.printf("강의평가: %s\n", this.instrs[i].appraisal);
         System.out.printf("웹사이트: %s\n", this.instrs[i].webSite);
         System.out.printf("수상내역: %s\n", this.instrs[i].prize);
-        break;
+        return;
       }
-      System.out.printf("%s 강사님의 정보는 없습니다.\n", instructorName);
     }
+    System.out.printf("%s 강사님의 정보는 없습니다.\n", instructorName);
   }
 
 
@@ -152,14 +152,13 @@ public class InstructorController {
         if (this.keyScan.nextLine().equals("y")) {
           this.instrs[i] = instr;
           System.out.println("저장되었습니다.");
-          break;
         } else {
           System.out.println("저장이 취소되었습니다.");
-          break;
         }
       }
-      System.out.printf("%s 강사님의 정보는 없습니다.\n", instructorName);
+      return;
     }
+    System.out.printf("%s 강사님의 정보는 없습니다.\n", instructorName);
   }
 
 
