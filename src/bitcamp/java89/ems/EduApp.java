@@ -14,6 +14,7 @@ public class EduApp {
 
     loop:
     while (true) {
+      System.out.println("add:등록 / list:전체조회 / view:강사조회 / delete:삭제 / update:수정 / quit:나가기");
       System.out.print("명령> ");
       String command = keyScan.nextLine().toLowerCase();
 
@@ -21,6 +22,8 @@ public class EduApp {
       case "add" : instructorController.doAdd(); break;
       case "list" : instructorController.doList(); break;
       case "view" : instructorController.doView(); break;
+      case "delete" : instructorController.doDelete(); break;
+      case "update" : instructorController.doUpdate(); break;
       case "quit" :
         System.out.println("Good bye!");
         break loop;
