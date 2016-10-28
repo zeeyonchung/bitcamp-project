@@ -14,16 +14,13 @@ public class EduApp {
 
     loop:
     while (true) {
-      System.out.println("add:등록 / list:전체조회 / view:강사조회 / delete:삭제 / update:수정 / quit:나가기");
+      System.out.println("menu:메뉴 / quit:나가기");
       System.out.print("명령> ");
       String command = keyScan.nextLine().toLowerCase();
 
       switch (command) {
-      case "add" : instructorController.doAdd(); break;
-      case "list" : instructorController.doList(); break;
-      case "view" : instructorController.doView(); break;
-      case "delete" : instructorController.doDelete(); break;
-      case "update" : instructorController.doUpdate(); break;
+      case "menu" : doMenu(); break;
+      case "go 1" : instructorController.service(); break;
       case "quit" :
         System.out.println("Good bye!");
         break loop;
@@ -31,6 +28,12 @@ public class EduApp {
         System.out.println("지원하지 않는 명령어입니다.");
       }
     }
+  }
+
+  static void doMenu() {
+    System.out.println("[메뉴]");
+    System.out.println("[1. 강사관리]");
+    System.out.println("메뉴 이동은 'go 메뉴번호'를 입력하세요.");
   }
 
 }

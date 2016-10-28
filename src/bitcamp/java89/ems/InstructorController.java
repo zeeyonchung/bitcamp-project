@@ -3,16 +3,39 @@ package bitcamp.java89.ems;
 import java.util.Scanner;
 
 public class InstructorController {
-  Instructor[] instrs = new Instructor[100];
-  int length = 0;
-  Scanner keyScan;
+  private Instructor[] instrs = new Instructor[100];
+  private int length = 0;
+  private Scanner keyScan;
+
 
   public InstructorController(Scanner keyScan) {
     this.keyScan = keyScan;
   }
 
 
-  public void doList() {
+  public void service() {
+    loop:
+    while (true) {
+      System.out.println("add:등록 / list:전체조회 / view:강사조회 / delete:삭제 / update:수정 / main:메인");
+      System.out.print("강사관리> ");
+      String command = keyScan.nextLine().toLowerCase();
+
+      switch (command) {
+      case "add" : this.doAdd(); break;
+      case "list" : this.doList(); break;
+      case "view" : this.doView(); break;
+      case "delete" : this.doDelete(); break;
+      case "update" : this.doUpdate(); break;
+      case "main" :
+        break loop;
+      default:
+        System.out.println("지원하지 않는 명령어입니다.");
+      }
+    }
+  }
+
+
+  private void doList() {
     for (int i = 0; i < this.length; i ++) {
       Instructor instr = this.instrs[i];
       System.out.printf("%s, %s, %s, %s, %s, %s, %s, %s, %s\n",
@@ -30,7 +53,7 @@ public class InstructorController {
   }
 
 
-  void doAdd() {
+  private void doAdd() {
     while (length < this.instrs.length) {
       Instructor instr = new Instructor();
 
@@ -71,7 +94,7 @@ public class InstructorController {
   }
 
 
-  public void doView() {
+  private void doView() {
     System.out.println("조회할 강사님의 성함을 입력하세요.");
     String instructorName = keyScan.nextLine().toLowerCase();
     for (int i = 0; i < this.length; i++) {
@@ -92,7 +115,7 @@ public class InstructorController {
   }
 
 
-  public void doDelete() {
+  private void doDelete() {
     System.out.println("정보를 삭제할 강사님의 성함을 입력하세요.");
     String instructorName = keyScan.nextLine().toLowerCase();
 
@@ -111,7 +134,7 @@ public class InstructorController {
   }
 
 
-  public void doUpdate() {
+  private void doUpdate() {
     System.out.println("정보를 수정할 강사님의 성함을 입력하세요.");
     String instructorName = keyScan.nextLine().toLowerCase();
 
