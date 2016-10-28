@@ -1,7 +1,7 @@
 package bitcamp.java89.ems;
 
 public class Instructor {
-  //인스턴스 변수
+
   String name;
   String lectureName;
   String jobCareer;
