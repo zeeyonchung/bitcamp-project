@@ -1,4 +1,6 @@
-package bitcamp.java89.ems.v8_5;
+//v0.10 제네릭기법적용
+
+package bitcamp.java89.ems;
 
 import java.util.Scanner;
 

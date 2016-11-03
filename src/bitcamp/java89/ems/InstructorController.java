@@ -1,11 +1,11 @@
-package bitcamp.java89.ems.v8_5;
+package bitcamp.java89.ems;
 //배열이 아니라 LinkedList기법을 이용한다..!
 
 import java.util.Scanner;
 
 public class InstructorController {
   private Scanner keyScan;
-  LinkedList list = new LinkedList();
+  LinkedList<Instructor> list = new LinkedList<Instructor>();
 
 
   public InstructorController(Scanner keyScan) {
@@ -83,7 +83,7 @@ public class InstructorController {
 
   private void doList() {
     for (int i = 0; i < list.size(); i++) { //사이즈의 수만큼 반복한다
-      Instructor instr = (Instructor)list.get(i); //instr의 값 (LinkedList의 currentBox.value)을 출력한다..
+      Instructor instr = list.get(i); //instr의 값 (LinkedList의 currentBox.value)을 출력한다..
       System.out.printf("%s, %s, %s, %s, %s, %s, %s, %s, %s\n",
         instr.name,
         instr.lectureName,
@@ -118,7 +118,7 @@ public class InstructorController {
     // for (int i = 0; i < index; i++) {
     //   currentBox = currentBox.next;
     // }
-    Instructor instr = (Instructor)list.get(index);
+    Instructor instr = list.get(index);
 
     System.out.printf("이름: %s\n", instr.name);
     System.out.printf("담당강의: %s\n", instr.lectureName);
@@ -161,7 +161,7 @@ public class InstructorController {
     //   //그리고.. 그 박스의 next는 그 담담 박스를 가리킴...
     // }
     // list.size()--;
-    Instructor deletedInfo = (Instructor)list.remove(index);
+    Instructor deletedInfo = list.remove(index);
     System.out.printf("%s님의 정보를 삭제했습니다.\n", deletedInfo.name);
 
   }
@@ -185,7 +185,7 @@ public class InstructorController {
       return;
     }
 
-    Instructor oldValue = (Instructor)list.get(index);
+    Instructor oldValue = list.get(index);
     //
     // for (int i = 0; i < index; i++) {
     //   currentBox = currentBox.next;

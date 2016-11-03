@@ -1,4 +1,4 @@
-package bitcamp.java89.ems.v8_5;
+package bitcamp.java89.ems;
 
 public class Instructor {
 

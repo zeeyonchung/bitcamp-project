@@ -1,26 +1,26 @@
-package bitcamp.java89.ems.v8_5;
+package bitcamp.java89.ems;
 
-public class LinkedList {
+public class LinkedList<T> {
   int length;
-  Box head = new Box();
-  Box tail;
+  Box<T> head = new Box<T>();
+  Box<T> tail;
 
   public LinkedList() {
     tail = head;
   }
 
 
-  public void add(Object value) {
+  public void add(T value) {
     //상자를 하나 추가해서 파라미터로 받은 Instructor형 데이터들을 이 상자의 value에 저장한다.
     tail.value = value;
-    tail.next = new Box();
+    tail.next = new Box<T>();
     tail = tail.next;
     length++;
   }
 
-  public Object get(int index) {
+  public T get(int index) {
     //index를 입력받아 해당하는 상자를 찾아서 value를 리턴한다. 리턴값의 타입은.. 다 다르겠지.
-    Box currentBox = head;
+    Box<T> currentBox = head;
 
     for (int i = 0; i < index; i++) {
       currentBox = currentBox.next;
@@ -30,8 +30,8 @@ public class LinkedList {
 
 
 
-  public void set(int index, Object value) {
-    Box currentBox = new Box();
+  public void set(int index, T value) {
+    Box<T> currentBox = new Box<T>();
     currentBox = head;
 
     // if (index >= length || index < 0) {
@@ -50,14 +50,14 @@ public class LinkedList {
 
 
 
-  public Object remove(int index) {
+  public T remove(int index) {
 
-    Box oldValue = new Box();
+    Box<T> oldValue = new Box<T>();
     if (index == 0) {
       oldValue = head;
       head = head.next;
     } else {
-      Box currentBox = new Box();
+      Box<T> currentBox = new Box<T>();
       currentBox = head;
       for (int i = 0; i < index-1; i++) {
         currentBox = currentBox.next;
@@ -77,11 +77,11 @@ public class LinkedList {
   }
 
 
-  private class Box {
-    Object value;
-    Box next;
+  private class Box<T> {
+    T value;
+    Box<T> next;
 
-    public Box() {
+    public Box<T>() {
 
     }//생성자
   }
