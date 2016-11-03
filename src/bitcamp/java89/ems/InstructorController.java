@@ -1,17 +1,14 @@
-package bitcamp.java89.ems;
+package bitcamp.java89.ems.v8_5;
 //배열이 아니라 LinkedList기법을 이용한다..!
 
 import java.util.Scanner;
 
 public class InstructorController {
-  private int length;
   private Scanner keyScan;
-  Box head;
-  Box tail;
+  LinkedList list = new LinkedList();
+
 
   public InstructorController(Scanner keyScan) {
-    head = new Box();
-    tail = head;
     this.keyScan = keyScan;
   }
 
@@ -70,10 +67,11 @@ public class InstructorController {
       instr.prize = this.keyScan.nextLine();
 
 
-      tail.value = instr;
-      tail.next = new Box();
-      tail = tail.next;
-      length++;
+      // tail.value = instr;
+      // tail.next = new Box();
+      // tail = tail.next;
+      // list.size()++;
+      list.add(instr);
 
       System.out.print("계속 입력하시겠습니까?(y/n) ");
       if (!this.keyScan.nextLine().equals("y")) {
@@ -84,21 +82,18 @@ public class InstructorController {
 
 
   private void doList() {
-    Box currentBox = new Box();
-    currentBox = head;
-    while (currentBox != tail) {
-      Instructor instr = (Instructor)currentBox.value;
+    for (int i = 0; i < list.size(); i++) { //사이즈의 수만큼 반복한다
+      Instructor instr = (Instructor)list.get(i); //instr의 값 (LinkedList의 currentBox.value)을 출력한다..
       System.out.printf("%s, %s, %s, %s, %s, %s, %s, %s, %s\n",
-      instr.name,
-      instr.lectureName,
-      instr.jobCareer,
-      instr.lectureCareer,
-      instr.book,
-      instr.school,
-      instr.appraisal,
-      instr.webSite,
-      instr.prize);
-      currentBox = currentBox.next;
+        instr.name,
+        instr.lectureName,
+        instr.jobCareer,
+        instr.lectureCareer,
+        instr.book,
+        instr.school,
+        instr.appraisal,
+        instr.webSite,
+        instr.prize);
     }
   }
 
@@ -107,19 +102,23 @@ public class InstructorController {
     System.out.println("조회할 강사님의 인덱스를 입력하세요.");
 
     int index = Integer.parseInt(keyScan.nextLine());
-    Box currentBox = new Box();
-    currentBox = head;
 
-    if (index >= length || index < 0) {
+    if (index >= list.size() || index < 0) {
       System.out.println("유효하지 않은 인덱스 값입니다.");
       return;
     }
-
-    for (int i = 0; i < index; i++) {
-      currentBox = currentBox.next;
-    }
-
-    Instructor instr = (Instructor)currentBox.value;
+    // Box currentBox = new Box();
+    // currentBox = head;
+    //
+    // if (index >= list.size() || index < 0) {
+    //   System.out.println("유효하지 않은 인덱스 값입니다.");
+    //   return;
+    // }
+    //
+    // for (int i = 0; i < index; i++) {
+    //   currentBox = currentBox.next;
+    // }
+    Instructor instr = (Instructor)list.get(index);
 
     System.out.printf("이름: %s\n", instr.name);
     System.out.printf("담당강의: %s\n", instr.lectureName);
@@ -136,60 +135,67 @@ public class InstructorController {
 
   private void doDelete() {
     System.out.println("정보를 삭제할 강사님의 인덱스를 입력하세요.");
+    //인덱스를 줘서 상자를 삭제한다(next 조작) remove
 
     int index = Integer.parseInt(keyScan.nextLine());
-    Box currentBox = new Box();
-    currentBox = head;
 
-    if (index >= length || index < 0) {
+    if (index >= list.size() || index < 0) {
       System.out.println("유효하지 않은 인덱스 값입니다.");
       return;
     }
-
-    if (index == 0) {
-      head = head.next;
-    } else {
-      for (int i = 0; i < index-1; i++) {
-        currentBox = currentBox.next;
-      }//입력받은 인덱스 직전의 박스까지 찾아가기
-      currentBox.next = currentBox.next.next;
-      //그리고.. 그 박스의 next는 그 담담 박스를 가리킴...
-    }
-    length--;
-    System.out.println("삭제를 완료했습니다.");
-
-    // System.out.print("삭제하시겠습니까?(y/n) ");
-    // if (this.keyScan.nextLine().equals("y")) {
-    //   currentBox.value = instr;
-    //   System.out.println("삭제되었습니다.");
-    // } else {
-    //   System.out.println("삭제가 취소되었습니다.");
+    // Box currentBox = new Box();
+    // currentBox = head;
+    //
+    // if (index >= list.size() || index < 0) {
+    //   System.out.println("유효하지 않은 인덱스 값입니다.");
+    //   return;
     // }
+    //
+    // if (index == 0) {
+    //   head = head.next;
+    // } else {
+    //   for (int i = 0; i < index-1; i++) {
+    //     currentBox = currentBox.next;
+    //   }//입력받은 인덱스 직전의 박스까지 찾아가기
+    //   currentBox.next = currentBox.next.next;
+    //   //그리고.. 그 박스의 next는 그 담담 박스를 가리킴...
+    // }
+    // list.size()--;
+    Instructor deletedInfo = (Instructor)list.remove(index);
+    System.out.printf("%s님의 정보를 삭제했습니다.\n", deletedInfo.name);
 
   }
+
 
 
   private void doUpdate() {
     System.out.println("정보를 수정할 강사님의 인덱스를 입력하세요.");
 
     int index = Integer.parseInt(keyScan.nextLine());
-    Box currentBox = new Box();
-    currentBox = head;
+    // Box currentBox = new Box();
+    // currentBox = head;
+    //
+    // if (index >= list.size() || index < 0) {
+    //   System.out.println("유효하지 않은 인덱스 값입니다.");
+    //   return;
+    // }
 
-    if (index >= length || index < 0) {
+    if (index >= list.size() || index < 0) {
       System.out.println("유효하지 않은 인덱스 값입니다.");
       return;
     }
 
-    for (int i = 0; i < index; i++) {
-      currentBox = currentBox.next;
-    }//입력한 인덱스의 박스까지 찾아갔음.
+    Instructor oldValue = (Instructor)list.get(index);
+    //
+    // for (int i = 0; i < index; i++) {
+    //   currentBox = currentBox.next;
+    // }//입력한 인덱스의 박스까지 찾아갔음.
 
-    Instructor oldInfo = new Instructor();
+    // Instructor oldInfo = new Instructor();
+    // oldInfo = (Instructor)currentBox.value;
     Instructor instr = new Instructor();
-    oldInfo = (Instructor)currentBox.value;
 
-    instr.name = oldInfo.name;
+    instr.name = oldValue.name;
 
     System.out.print("담당강의(예:JAVA 입문)? ");
     instr.lectureName = this.keyScan.nextLine();
@@ -217,12 +223,13 @@ public class InstructorController {
 
     System.out.print("저장하시겠습니까?(y/n) ");
     if (this.keyScan.nextLine().equals("y")) {
-      currentBox.value = instr;
+      Instructor newValue = instr;
+      list.set(index, newValue);
+    //  = list.set(index, newValue);
       System.out.println("저장되었습니다.");
     } else {
       System.out.println("저장이 취소되었습니다.");
     }
   }
-
 
 }
