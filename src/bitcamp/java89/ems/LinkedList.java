@@ -11,15 +11,19 @@ public class LinkedList<T> {
 
 
   public void add(T value) {
-    //상자를 하나 추가해서 파라미터로 받은 Instructor형 데이터들을 이 상자의 value에 저장한다.
     tail.value = value;
     tail.next = new Box<T>();
     tail = tail.next;
     length++;
   }
 
+
+
   public T get(int index) {
-    //index를 입력받아 해당하는 상자를 찾아서 value를 리턴한다. 리턴값의 타입은.. 다 다르겠지.
+    if (index >= length || index < 0) {
+      throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
+    }
+
     Box<T> currentBox = head;
 
     for (int i = 0; i < index; i++) {
@@ -31,6 +35,11 @@ public class LinkedList<T> {
 
 
   public void set(int index, T value) {
+
+     if (index >= length || index < 0) {
+      throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
+    }
+
     Box<T> currentBox = new Box<T>();
     currentBox = head;
 
@@ -48,9 +57,11 @@ public class LinkedList<T> {
 
 
 
-
-
   public T remove(int index) {
+    
+     if (index >= length || index < 0) {
+      throw new IndexOutOfBoundsException("인덱스가 유효하지 않습니다.");
+    }
 
     Box<T> oldValue = new Box<T>();
     if (index == 0) {
@@ -81,9 +92,9 @@ public class LinkedList<T> {
     T value;
     Box<T> next;
 
-    public Box<T>() {
+    // public Box<T>() {
 
-    }//생성자
+    // }//생성자
   }
 
 
