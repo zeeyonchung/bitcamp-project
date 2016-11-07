@@ -1,11 +1,13 @@
-//v1.1.1 (Exception 한 번에 처리)
+//v1.2
+//내가 만든 LinkedList 대신 자바에서 제공하는 ArrayList 사용하여 데이터 목록 다룬다.
 package bitcamp.java89.ems;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class InstructorController {
   private Scanner keyScan;
-  LinkedList<Instructor> list = new LinkedList<Instructor>();
+  ArrayList<Instructor> list = new ArrayList<Instructor>();
 
 
   public InstructorController(Scanner keyScan) {
@@ -84,8 +86,7 @@ public class InstructorController {
 
 
   private void doList() {
-    for (int i = 0; i < list.size(); i++) { //사이즈의 수만큼 반복한다
-      Instructor instr = list.get(i); //instr의 값 (LinkedList의 currentBox.value)을 출력한다..
+    for (Instructor instr : list) {
       System.out.printf("%s, %s, %s, %s, %s, %s, %s, %s, %s\n",
         instr.name,
         instr.lectureName,
