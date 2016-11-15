@@ -1,13 +1,23 @@
-//v1.2
-//내가 만든 LinkedList 대신 자바에서 제공하는 ArrayList 사용하여 데이터 목록 다룬다.
+//v1.3
+//파일 불러오기, 저장하기
+
 package bitcamp.java89.ems;
 
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.FileOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.DataInputStream;
+import java.io.EOFException;
+import java.lang.Exception;
+import java.io.File;
 
 public class InstructorController {
   private Scanner keyScan;
   ArrayList<Instructor> list = new ArrayList<Instructor>();
+  static String filePath = "./Test2.data";
+  static boolean change = false;
 
 
   public InstructorController(Scanner keyScan) {
@@ -40,6 +50,84 @@ public class InstructorController {
           System.out.println("인덱스 값이 잘못되었거나 실행 중 오류가 발생했습니다.");
       }
     }//while
+  }
+
+
+  public boolean isChanged() {
+    return change;
+  }
+
+
+  public void open() {
+    try {
+      File file = new File(filePath);
+      if (!file.exists()) {
+        file.createNewFile();
+      }
+    } catch (Exception e) {
+      System.out.println("파일이 정상적으로 로딩되지 않음");
+    }
+
+    FileInputStream in0 = null;
+    DataInputStream in2 = null;
+
+    try {
+      in0 = new FileInputStream(filePath);
+      in2 = new DataInputStream(in0);
+
+     while (in0.available() > 0) {
+        Instructor instr = new Instructor();
+        instr.name = in2.readUTF();
+        instr.lectureName = in2.readUTF();
+        instr.jobCareer = in2.readUTF();
+        instr.lectureCareer = in2.readUTF();
+        instr.book = in2.readUTF();
+        instr.school = in2.readUTF();
+        instr.appraisal = in2.readUTF();
+        instr.webSite = in2.readUTF();
+        instr.prize = in2.readUTF();
+        list.add(instr);
+      }
+    } catch (EOFException e) {
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.out.println("데이터 비정상");
+    } finally {
+      try {
+        in0.close();
+        in2.close();
+      } catch (Exception e) {}
+    }
+  }
+
+
+
+
+  public void save() {
+    try {
+      FileOutputStream out = new FileOutputStream(filePath);
+      DataOutputStream out2 = new DataOutputStream(out);
+
+
+      for (Instructor instr : list) {
+          out2.writeUTF(instr.name);
+          out2.writeUTF(instr.lectureName);
+          out2.writeUTF(instr.jobCareer);
+          out2.writeUTF(instr.lectureCareer);
+          out2.writeUTF(instr.book);
+          out2.writeUTF(instr.school);
+          out2.writeUTF(instr.appraisal);
+          out2.writeUTF(instr.webSite);
+          out2.writeUTF(instr.prize);
+      }
+
+      System.out.println("저장하였습니다.");
+
+      out.close();
+      out2.close();
+    } catch (Exception e) {
+
+    }
   }
 
 
@@ -78,6 +166,7 @@ public class InstructorController {
 
       System.out.print("계속 입력하시겠습니까?(y/n) ");
       if (!this.keyScan.nextLine().equals("y")) {
+        change = true;
         break;
       }
     }//while
@@ -126,6 +215,7 @@ public class InstructorController {
 
       Instructor deletedInfo = list.remove(index);
       System.out.printf("%s님의 정보를 삭제했습니다.\n", deletedInfo.name);
+      change = true;
   }
 
 
@@ -171,6 +261,7 @@ public class InstructorController {
       list.set(index, newValue);
     //  = list.set(index, newValue);
       System.out.println("저장되었습니다.");
+      change = true;
     } else {
       System.out.println("저장이 취소되었습니다.");
     }
