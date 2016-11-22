@@ -1,32 +1,24 @@
 
 package bitcamp.java89.ems.server.controller;
 
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import bitcamp.java89.ems.server.vo.Contact;
+import bitcamp.java89.ems.server.dao.InstructorDao;
 import bitcamp.java89.ems.server.vo.Instructor;
 
 public class InstructorController {
-  private ArrayList<Instructor> list;
-  private String filename = "instructor-v1.6.data";
-  private boolean changed;
   private Scanner in;
   private PrintStream out;
+  private InstructorDao instrDao;
 
 
   public InstructorController(Scanner in, PrintStream out) {
-    list = new ArrayList<Instructor>();
     this.in = in;
     this.out = out;
-    this.load();
+    instrDao = InstructorDao.getInstance();
   }
 
 
@@ -56,52 +48,13 @@ public class InstructorController {
         }
       }//while
   }
-
-
-  public boolean isChanged() {
-    return changed;
-  }
-
-
-  @SuppressWarnings("unchecked")
-  private void load() {
-    FileInputStream in0 = null;
-    ObjectInputStream in = null;
-
-    try {
-      in0 = new FileInputStream(this.filename);
-      in = new ObjectInputStream(in0);
-
-      list = (ArrayList<Instructor>)in.readObject();
-
-    } catch (EOFException e) {
-      // 파일을 모두 읽었다.
-    } catch (Exception e) {
-      System.out.println("강사 데이터 로딩 중 오류 발생!");
-    } finally {
-      try {
-        in.close();
-        in0.close();
-      } catch (Exception e) {
-        // close하다가 예외 발생하면 무시한다.
-      }
-    }
-  }
-
-
+  
 
 
   public void save() throws Exception {
-    FileOutputStream out0 = new FileOutputStream(this.filename);
-    ObjectOutputStream out = new ObjectOutputStream(out0);
-
-
-    out.writeObject(list);
-
-    changed = false;
-
-    out0.close();
-    out.close();
+    if (instrDao.isChanged()) {
+      instrDao.save();
+    }
   }
 
 
@@ -112,9 +65,13 @@ public class InstructorController {
     for (String value : values) {
       String[] kv = value.split("=");
       paramMap.put(kv[0], kv[1]);
-    } 
+    }
+    
+    if (instrDao.existName(paramMap.get("name"))) {
+      out.println("입력하신 성함의 강사님의 정보가 이미 존재합니다.");
+      return;
+    }
 
-    // add?name=1&lectureName=1&jobCareer=1&lectureCareer=4&book=2&school=3&appraisal=3&webSite=5&prize=2
     Instructor instr = new Instructor();
     instr.setName(paramMap.get("name"));
     instr.setLectureName(paramMap.get("lectureName"));
@@ -127,29 +84,13 @@ public class InstructorController {
     instr.setPrize(paramMap.get("prize"));
 
 
-    if (existName(instr.getName())) {
-      out.println("입력하신 성함의 강사님의 정보가 이미 존재합니다.");
-      return;
-    }
-
-    list.add(instr);
-    changed = true;
+    instrDao.insert(instr);
     out.println("등록하였습니다.");
-
-  }
-
-
-  private boolean existName(String name) {
-    for (Instructor instr : list) {
-      if (instr.getName().equals(name)) {
-        return true;
-      }
-    }
-    return false;
   }
 
 
   private void doList() {
+    ArrayList<Instructor> list = instrDao.getList();
     for (Instructor instr : list) {
       out.printf("%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
           instr.getName(),
@@ -167,6 +108,8 @@ public class InstructorController {
 
   private void doView(String param) {
     String[] name = param.split("=");
+    ArrayList<Instructor> list = instrDao.getListByName(name[1]);
+
     for (Instructor instr : list) {
       if (instr.getName().equals(name[1])) {
         out.printf("이름: %s\n", instr.getName());
@@ -185,21 +128,15 @@ public class InstructorController {
 
   private void doDelete(String param) {
     String[] name = param.split("=");
-
-    ArrayList<Instructor> deleteList = new ArrayList<>();
-
-    for (Instructor instr : list) {
-      if (instr.getName().equals(name[1])) {
-        deleteList.add(instr);
-      }
+    
+    if (!instrDao.existName(name[1])) {
+      out.println("해당 데이터가 없습니다.");
+      return;
     }
-
-    for (Instructor instr : deleteList) {
-      list.remove(instr);
-    }
-
-    changed = true;
-    out.println("삭제하였습니다.");
+    
+    
+    instrDao.delete(name[1]);
+    out.println("해당 데이터를 삭제했습니다.");
   }
 
 
@@ -213,22 +150,24 @@ public class InstructorController {
       String[] kv = value.split("=");
       paramMap.put(kv[0], kv[1]);
     }
-    for (Instructor  instr: list) {
-      if (instr.getName().equals(paramMap.get("name"))) {
-        instr.setName(paramMap.get("name"));
-        instr.setLectureName(paramMap.get("lectureName"));
-        instr.setJobCareer(paramMap.get("jobCareer"));
-        instr.setLectureCareer(paramMap.get("lectureCareer"));
-        instr.setBook(paramMap.get("book"));
-        instr.setSchool(paramMap.get("school"));
-        instr.setAppraisal(paramMap.get("appraisal"));
-        instr.setWebSite(paramMap.get("webSite"));
-        instr.setPrize(paramMap.get("prize"));
-        out.println("변경 하였습니다.");
-        changed = true;
-        return;
-      } 
+    
+    if (instrDao.existName(paramMap.get("email"))) {
+      out.println("이메일을 찾지 못했습니다.");
+      return;
     }
-    out.println("이메일을 찾지 못했습니다.");
+    
+    Instructor instr = new Instructor();
+    instr.setName(paramMap.get("name"));
+    instr.setLectureName(paramMap.get("lectureName"));
+    instr.setJobCareer(paramMap.get("jobCareer"));
+    instr.setLectureCareer(paramMap.get("lectureCareer"));
+    instr.setBook(paramMap.get("book"));
+    instr.setSchool(paramMap.get("school"));
+    instr.setAppraisal(paramMap.get("appraisal"));
+    instr.setWebSite(paramMap.get("webSite"));
+    instr.setPrize(paramMap.get("prize"));
+    
+    instrDao.update(instr);
+    out.println("변경 하였습니다.");
   }
 }
