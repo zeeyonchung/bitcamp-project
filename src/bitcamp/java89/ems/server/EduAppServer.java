@@ -15,15 +15,19 @@ import bitcamp.java89.ems.server.controller.InstructorController;
 
 
 public class EduAppServer {
-  static Scanner keyScan = new Scanner(System.in);
-  static InstructorController instructorController;
-  static ContactController contactController;
-  static Scanner in;
-  static PrintStream out;
+  private InstructorController instructorController;
+  private ContactController contactController;
+  private Scanner in;
+  private PrintStream out;
 
 
   public static void main(String[] args) throws Exception {
-    
+   EduAppServer eduServer = new EduAppServer();
+   eduServer.service();
+  }
+  
+  
+  private void service() throws Exception {
     ServerSocket ss = new ServerSocket(8888);
     System.out.println("서버 실행 중....");
     
@@ -32,7 +36,8 @@ public class EduAppServer {
     }
   }
 
-  private static void processRequest(Socket socket) {
+  
+  private void processRequest(Socket socket) {
     try {
       in = new Scanner(new BufferedInputStream(socket.getInputStream()));
       out = new PrintStream(new BufferedOutputStream(socket.getOutputStream()), true);
@@ -79,7 +84,7 @@ public class EduAppServer {
     }
   }
 
-  static void doMenu() {
+  private void doMenu() {
     out.println("[메뉴]");
     out.println("[1. 강사관리]");
     out.println("[2. 연락처관리]");
@@ -90,7 +95,7 @@ public class EduAppServer {
   }
   
   
-  static boolean doQuit() {
+  private boolean doQuit() {
     boolean changed1 = instructorController.isChanged();
     boolean changed2 = contactController.isChanged();
     if (changed1 || changed2) {
@@ -101,7 +106,7 @@ public class EduAppServer {
   }
 
   
-  static void doSave() {
+  private void doSave() {
     try {
       instructorController.save();
     } catch (Exception e) {
