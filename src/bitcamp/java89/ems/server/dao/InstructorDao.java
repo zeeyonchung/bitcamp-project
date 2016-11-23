@@ -13,7 +13,7 @@ import bitcamp.java89.ems.server.vo.Instructor;
 public class InstructorDao {
   static InstructorDao obj;
   private ArrayList<Instructor> list;
-  private String filename = "instructor-v1.6.data";
+  private String filename = "instructor-v1.7.data";
   private boolean changed;
 
   
