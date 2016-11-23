@@ -2,7 +2,7 @@ package bitcamp.java89.ems.server.vo;
 
 import java.io.Serializable;
 
-public class Instructor implements Serializable {
+public class Teacher implements Serializable {
 
   private static final long serialVersionUID = 1L;
   
@@ -17,9 +17,9 @@ public class Instructor implements Serializable {
   protected String prize;
 
 
-  public Instructor() {}
+  public Teacher() {}
 
-  public Instructor(String name, String lectureName, String lectureCareer) {
+  public Teacher(String name, String lectureName, String lectureCareer) {
     this.name = name;
     this.lectureName = lectureName;
     this.lectureCareer = lectureCareer;
@@ -99,7 +99,7 @@ public class Instructor implements Serializable {
 
   @Override
   public String toString() {
-    return "Instructor [name=" + name + ", lectureName=" + lectureName + ", jobCareer=" + jobCareer + ", lectureCareer="
+    return "Teacher [name=" + name + ", lectureName=" + lectureName + ", jobCareer=" + jobCareer + ", lectureCareer="
         + lectureCareer + ", book=" + book + ", school=" + school + ", appraisal=" + appraisal + ", webSite=" + webSite
         + ", prize=" + prize + "]";
   }

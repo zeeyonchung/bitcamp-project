@@ -63,7 +63,7 @@ public class RequestThread extends Thread {
         }
         
         //클라이언트가 보낸 명령을 처리할 객체가 있다면, 작업을 실행한다.
-        commandHandler.service(paramMap, out);
+        commandHandler.service(paramMap, out); // = (new ContactListController()).service();
         
       }//while
     } catch (Exception e) {

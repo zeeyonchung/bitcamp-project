@@ -8,28 +8,21 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-import bitcamp.java89.ems.server.vo.Instructor;
+import bitcamp.java89.ems.server.vo.Teacher;
 
-public class InstructorDao {
-  static InstructorDao obj;
-  private ArrayList<Instructor> list;
-  private String filename = "instructor-v1.7.data";
-  private boolean changed;
+public class TeacherDao {
+  static TeacherDao obj;
+  private ArrayList<Teacher> list;
+  private String filename = "teacheructor-v1.7.data";
 
   
-  private InstructorDao() {
+  private TeacherDao() {
     this.load();
   }
 
-  
-  public boolean isChanged() {
-    return changed;
-  }
-  
-  
-  public static InstructorDao getInstance() {
+  public static TeacherDao getInstance() {
     if (obj == null) {
-      obj = new InstructorDao();
+      obj = new TeacherDao();
     }
     return obj;
   }
@@ -44,7 +37,7 @@ public class InstructorDao {
       in0 = new FileInputStream(this.filename);
       in = new ObjectInputStream(in0);
 
-      list = (ArrayList<Instructor>)in.readObject();
+      list = (ArrayList<Teacher>)in.readObject();
 
     } catch (EOFException e) {
     } catch (Exception e) {
@@ -69,22 +62,20 @@ public class InstructorDao {
 
     out.writeObject(list);
 
-    changed = false;
-
     out0.close();
     out.close();
   }
 
 
-  public void insert(Instructor instr) {
-    list.add(instr);
-    changed = true;
+  public void insert(Teacher teacher) {
+    list.add(teacher);
+    try {this.save();} catch (Exception e) {}
   }
 
 
   public boolean existName(String name) {
-    for (Instructor instr : list) {
-      if (instr.getName().equals(name)) {
+    for (Teacher teacher : list) {
+      if (teacher.getName().equals(name)) {
         return true;
       }
     }
@@ -92,18 +83,18 @@ public class InstructorDao {
   }
 
 
-  public ArrayList<Instructor> getList() {
+  public ArrayList<Teacher> getList() {
     return this.list;
   }
   
   
   
-  public ArrayList<Instructor> getListByName(String name) {
-    ArrayList<Instructor> results = new ArrayList<>();
+  public ArrayList<Teacher> getListByName(String name) {
+    ArrayList<Teacher> results = new ArrayList<>();
     
-    for (Instructor instr : list) {
-      if (instr.getName().equals(name)) {
-        results.add(instr);
+    for (Teacher teacher : list) {
+      if (teacher.getName().equals(name)) {
+        results.add(teacher);
       }
     }
     
@@ -116,7 +107,7 @@ public class InstructorDao {
     for (int i = 0; i < list.size(); i++) {
       if (list.get(i).getName().equals(name)) {
         list.remove(i);
-        changed = true;
+        try {this.save();} catch (Exception e) {}
         return;
       }
     }
@@ -125,11 +116,11 @@ public class InstructorDao {
 
 
 
-  public void update(Instructor instr) {
+  public void update(Teacher teacher) {
     for (int i = 0; i < list.size(); i++) {
-      if (list.get(i).getName().equals(instr.getName())) {
-        list.set(i, instr);
-        changed = true;
+      if (list.get(i).getName().equals(teacher.getName())) {
+        list.set(i, teacher);
+        try {this.save();} catch (Exception e) {}
         return;
       }
     }
