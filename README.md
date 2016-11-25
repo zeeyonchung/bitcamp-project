@@ -1,4 +1,4 @@
-v1.8
-- command 패턴 적용
-- command.java 인터페이스 정의
-  - 클라이언트 요청이 들어왔을 때 EduAppServer가 호출하는 메서드 규칙
+v1.9
+상속(Generalization) 기법 적용
+- AbstractDao.java 추가
+- ContactDao와 TeacherDao의 공통 멤버를 추출하여 상위 클래스 정의
