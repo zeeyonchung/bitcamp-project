@@ -29,4 +29,9 @@ public class ContactAddController extends AbstractCommand {
       out.println("등록하였습니다.");
   }
 
+  @Override
+  public String getCommandString() {
+    return "contact/add";
+  }
+
 }

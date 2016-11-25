@@ -3,13 +3,12 @@ package bitcamp.java89.ems.server.controller;
 import java.io.PrintStream;
 import java.util.HashMap;
 
-import bitcamp.java89.ems.server.Command;
+import bitcamp.java89.ems.server.AbstractCommand;
 import bitcamp.java89.ems.server.dao.TeacherDao;
 import bitcamp.java89.ems.server.vo.Teacher;
 
-public class TeacherViewController implements Command {
-  public void service(HashMap<String, String> paramMap, PrintStream out) {
-    try {
+public class TeacherViewController extends AbstractCommand {
+  public void doResponse(HashMap<String, String> paramMap, PrintStream out) throws Exception {
       TeacherDao teacherDao = TeacherDao.getInstance();
       for (Teacher teacher : teacherDao.getListByName(paramMap.get("name"))) {
         if (teacher.getName().equals(paramMap.get("name"))) {
@@ -24,8 +23,10 @@ public class TeacherViewController implements Command {
           out.printf("수상내역: %s\n", teacher.getPrize());
         }
       }
-    } catch (Exception e) {
-      out.println("작업 중 오류가 발생했습니다.");
-    }
+  }
+
+  @Override
+  public String getCommandString() {
+    return "teacher/view";
   }
 }

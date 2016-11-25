@@ -1,7 +1,6 @@
-v2.1
-추상클래스의 활용
+v2.2
 
-AbstractCommand.java 추가
-Command 구현체를 추상클래스로 만든다.
+리플렉션 API의 용도를 활용하여 객체 생성 자동화하기
 
-인터페이스를 구현하는데 추상 클래스 문법을 활용할 수 있다.
+ReflectionUtil.java 추가 
+  - AbstractCommand의 서브 클래스 찾아 그 목록을 리턴

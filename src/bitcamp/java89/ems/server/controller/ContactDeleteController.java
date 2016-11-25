@@ -19,4 +19,9 @@ public class ContactDeleteController extends AbstractCommand {
       out.println("해당 데이터 삭제 완료하였습니다.");
   }
 
+  @Override
+  public String getCommandString() {
+    return "contact/delete";
+  }
+
 }

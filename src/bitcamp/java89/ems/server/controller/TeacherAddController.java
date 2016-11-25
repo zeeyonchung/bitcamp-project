@@ -3,14 +3,13 @@ package bitcamp.java89.ems.server.controller;
 import java.io.PrintStream;
 import java.util.HashMap;
 
-import bitcamp.java89.ems.server.Command;
+import bitcamp.java89.ems.server.AbstractCommand;
 import bitcamp.java89.ems.server.dao.TeacherDao;
 import bitcamp.java89.ems.server.vo.Teacher;
 
-public class TeacherAddController implements Command {
+public class TeacherAddController extends AbstractCommand {
   
-  public void service(HashMap<String, String> paramMap, PrintStream out) {
-    try {
+  public void doResponse(HashMap<String, String> paramMap, PrintStream out)  throws Exception {
       TeacherDao teacherDao = TeacherDao.getInstance();
       if (teacherDao.existName(paramMap.get("name"))) {
         out.println("입력하신 성함의 강사님의 정보가 이미 존재합니다.");
@@ -31,9 +30,10 @@ public class TeacherAddController implements Command {
   
       teacherDao.insert(teacher);
       out.println("등록하였습니다.");
-    } catch (Exception e) {
-      out.println("작업 중 오류가 발생했습니다.");
-    }
   }
-  
+
+  @Override
+  public String getCommandString() {
+    return "teacher/add";
+  }
 }

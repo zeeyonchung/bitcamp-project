@@ -23,4 +23,9 @@ public class ContactListController extends AbstractCommand {
     }
   }
 
+  @Override
+  public String getCommandString() {
+    return "contact/list";
+  }
+
 }
