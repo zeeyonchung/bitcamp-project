@@ -3,14 +3,13 @@ package bitcamp.java89.ems.server.controller;
 import java.io.PrintStream;
 import java.util.HashMap;
 
-import bitcamp.java89.ems.server.Command;
+import bitcamp.java89.ems.server.AbstractCommand;
 import bitcamp.java89.ems.server.dao.ContactDao;
 import bitcamp.java89.ems.server.vo.Contact;
 
-public class ContactUpdateController implements Command {
+public class ContactUpdateController extends AbstractCommand {
 
-  public void service(HashMap<String, String> paramMap, PrintStream out) {
-    try {
+  protected void doResponse(HashMap<String, String> paramMap, PrintStream out) throws Exception {
       ContactDao contactDao = ContactDao.getInstance();
 
       if (!contactDao.existEmail(paramMap.get("email"))) {
@@ -27,10 +26,5 @@ public class ContactUpdateController implements Command {
 
       contactDao.update(contact);
       out.println("변경 하였습니다.");
-
-    } catch (Exception e) {
-      out.println("작업 중 오류가 발생했습니다.");
-      e.printStackTrace();
-    }
   }
 }

@@ -12,7 +12,6 @@ public class TeacherDao extends AbstractDao<Teacher> {
   public static TeacherDao getInstance() throws Exception {
     if (obj == null) {
       obj = new TeacherDao();
-      System.out.println("로드");
       obj.load();
     }
     return obj;
