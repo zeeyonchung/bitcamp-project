@@ -8,9 +8,14 @@ import bitcamp.java89.ems.server.dao.TeacherDao;
 import bitcamp.java89.ems.server.vo.Teacher;
 
 public class TeacherAddController extends AbstractCommand {
+  TeacherDao teacherDao;
+  
+  public void setTeacherDao(TeacherDao teacherDao) {
+    this.teacherDao = teacherDao;
+  }
+  
   
   public void doResponse(HashMap<String, String> paramMap, PrintStream out)  throws Exception {
-      TeacherDao teacherDao = TeacherDao.getInstance();
       if (teacherDao.existName(paramMap.get("name"))) {
         out.println("입력하신 성함의 강사님의 정보가 이미 존재합니다.");
         return;

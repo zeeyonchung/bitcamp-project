@@ -6,22 +6,25 @@ import java.util.ArrayList;
 import bitcamp.java89.ems.server.vo.Teacher;
 
 public class TeacherDao extends AbstractDao<Teacher> {
-  static TeacherDao obj;
-
   
-  public static TeacherDao getInstance() throws Exception {
-    if (obj == null) {
-      obj = new TeacherDao();
-      obj.load();
+  
+  public ArrayList<Teacher> getList() {
+    return this.list;
+  }
+  
+  
+  public ArrayList<Teacher> getListByName(String name) {
+    ArrayList<Teacher> results = new ArrayList<>();
+    
+    for (Teacher teacher : list) {
+      if (teacher.getName().equals(name)) {
+        results.add(teacher);
+      }
     }
-    return obj;
+    
+    return results;
   }
-
-  private TeacherDao() throws Exception {
-    super("teacher-v1.9.data");
-  }
-
-
+  
   public void insert(Teacher teacher) {
     list.add(teacher);
     try {this.save();
@@ -37,25 +40,6 @@ public class TeacherDao extends AbstractDao<Teacher> {
       }
     }
     return false;
-  }
-
-
-  public ArrayList<Teacher> getList() {
-    return this.list;
-  }
-
-
-
-  public ArrayList<Teacher> getListByName(String name) {
-    ArrayList<Teacher> results = new ArrayList<>();
-
-    for (Teacher teacher : list) {
-      if (teacher.getName().equals(name)) {
-        results.add(teacher);
-      }
-    }
-
-    return results;
   }
 
 

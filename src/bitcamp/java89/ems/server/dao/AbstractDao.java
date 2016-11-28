@@ -12,13 +12,14 @@ public abstract class AbstractDao<T> {
   private String filename;
   protected ArrayList<T> list;
 
-  public AbstractDao(String filename) {
+  
+  public void setFilename(String filename) {
     this.filename = filename;
   }
 
   
   @SuppressWarnings("unchecked")
-  protected void load() throws Exception {
+  public void load() throws Exception {
     try (
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(this.filename)); ) {
 

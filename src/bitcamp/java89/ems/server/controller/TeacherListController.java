@@ -8,8 +8,13 @@ import bitcamp.java89.ems.server.dao.TeacherDao;
 import bitcamp.java89.ems.server.vo.Teacher;
 
 public class TeacherListController extends AbstractCommand {
+  TeacherDao teacherDao;
+  
+  public void setTeacherDao(TeacherDao teacherDao) {
+    this.teacherDao = teacherDao;
+  }
+  
   public void doResponse(HashMap<String, String> paramMap, PrintStream out) throws Exception {
-      TeacherDao teacherDao = TeacherDao.getInstance();
       for (Teacher teacher : teacherDao.getList()) {
         out.printf("%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
             teacher.getName(),

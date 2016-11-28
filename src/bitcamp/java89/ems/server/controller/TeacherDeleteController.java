@@ -7,8 +7,14 @@ import bitcamp.java89.ems.server.AbstractCommand;
 import bitcamp.java89.ems.server.dao.TeacherDao;
 
 public class TeacherDeleteController extends AbstractCommand {
+  TeacherDao teacherDao;
+  
+  public void setTeacherDao(TeacherDao teacherDao) {
+    this.teacherDao = teacherDao;
+  }
+
+  
   public void doResponse(HashMap<String, String> paramMap, PrintStream out) throws Exception {
-      TeacherDao teacherDao = TeacherDao.getInstance();
       if (!teacherDao.existName(paramMap.get("name"))) {
         out.println("입력하신 성함의 강사님 정보를 찾지 못했습니다.");
         return;
