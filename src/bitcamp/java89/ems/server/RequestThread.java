@@ -9,18 +9,19 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import bitcamp.java89.ems.server.annotation.RequestMapping;
-import bitcamp.java89.ems.server.context.ApplicationContext;
+import bitcamp.java89.ems.server.context.RequestHandlerMapping;
+import bitcamp.java89.ems.server.context.RequestHandlerMapping.RequestHandler;
 
 public class RequestThread extends Thread {
   
   Socket socket;
   private Scanner in;
   private PrintStream out;
-  private ApplicationContext appContext;
+  private RequestHandlerMapping handlerMapping;
   
-  public RequestThread(Socket socket, ApplicationContext appContext) {
+  public RequestThread(Socket socket, RequestHandlerMapping handlerMapping) {
     this.socket = socket;
-    this.appContext = appContext;
+    this.handlerMapping = handlerMapping;
   }
   
   
@@ -50,7 +51,7 @@ public class RequestThread extends Thread {
           }
         }
         
-        Object requestHandler = appContext.getBean(command[0]);
+        RequestHandler requestHandler = handlerMapping.getRequestHandler(command[0]);
         
         
         if (requestHandler == null) {
@@ -63,8 +64,7 @@ public class RequestThread extends Thread {
         }
         
         try {
-          Method  m = findRequestMappingMethod(requestHandler.getClass());
-          m.invoke(requestHandler, paramMap, out);
+          requestHandler.method.invoke(requestHandler.obj, paramMap, out);
         } catch (Exception e) {
           out.println("작업 중 오류가 발생했습니다.");
           e.printStackTrace();
@@ -82,20 +82,6 @@ public class RequestThread extends Thread {
   }
   
   
-  
-  private Method findRequestMappingMethod(Class<?> clazz) throws Exception {
-    Method[] methods = clazz.getMethods();
-    for (Method method : methods) {
-      RequestMapping anno = method.getAnnotation(RequestMapping.class);
-      if (anno != null) {
-        return method;
-      }
-    }
-    throw new Exception("요청을 처리할 메서드가 없습니다.");
-  }
-
-
-
   private boolean doQuit() {
     System.out.println("클라이언트 연결 종료!");
     return true;

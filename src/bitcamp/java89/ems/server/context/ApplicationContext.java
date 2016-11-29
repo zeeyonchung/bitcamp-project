@@ -34,6 +34,11 @@ public class ApplicationContext {
   public Object getBean(String name) {
     return objPool.get(name);
   }
+  
+  
+  public Collection<Object> getAllBeans() {
+    return objPool.values();
+  }
 
 
 
