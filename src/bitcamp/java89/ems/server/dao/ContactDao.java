@@ -6,10 +6,17 @@ import bitcamp.java89.ems.server.vo.Contact;
 
 public class ContactDao extends AbstractDao<Contact> {
   
+  public ContactDao() {
+    this.setFilename("contact-v1.9.data");
+    try {this.load();} catch (Exception e) {}
+  }
+  
+  
   public ArrayList<Contact> getList() {
     return this.list;
   }
 
+  
   public ArrayList<Contact> getListByName(String name) {
     ArrayList<Contact> results = new ArrayList<>();
 

@@ -7,16 +7,18 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import bitcamp.java89.ems.server.context.ApplicationContext;
+
 public class RequestThread extends Thread {
   
   Socket socket;
   private Scanner in;
   private PrintStream out;
-  private HashMap<String, Command> commandMap;
+  private ApplicationContext appContext;
   
-  public RequestThread(Socket socket, HashMap<String, Command> commandMap) {
+  public RequestThread(Socket socket, ApplicationContext appContext) {
     this.socket = socket;
-    this.commandMap = commandMap;
+    this.appContext = appContext;
   }
   
   
@@ -35,8 +37,6 @@ public class RequestThread extends Thread {
         out.println();
         
         String[] command = in.nextLine().split("\\?");
-        //클라이언트가 보낸 명령문을 분석하여 명령어와 파라미터 값을 분리.
-        //command[0]은 명령어, command[1]은 name=1&tel=3 ...
         HashMap<String, String> paramMap = new HashMap<>();
         
         if (command.length == 2) {
@@ -45,12 +45,11 @@ public class RequestThread extends Thread {
           for (String value : params) {
             String[] kv = value.split("=");
             paramMap.put(kv[0], kv[1]);
-            //HashMap paramMap에  name : 1 / tel : 3 / ... 저장
           }
         }
         
         
-        Command commandHandler = commandMap.get(command[0]);// contact/view
+        Command commandHandler = (Command)appContext.getBean(command[0]);// contact/view
         
         
         if (commandHandler == null) {
@@ -59,11 +58,11 @@ public class RequestThread extends Thread {
             break;
           }
           out.println("지원하지 않는 명령어입니다.");
-          continue; //다음 줄로 가지 않고 반복문 조건 검사로 건너 뛴다. 위 while로..
+          continue; 
         }
         
-        //클라이언트가 보낸 명령을 처리할 객체가 있다면, 작업을 실행한다.
-        commandHandler.service(paramMap, out); // = (new ContactListController()).service();
+        
+        commandHandler.service(paramMap, out);
         
       }//while
     } catch (Exception e) {

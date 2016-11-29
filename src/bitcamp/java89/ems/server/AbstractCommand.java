@@ -14,6 +14,7 @@ public abstract class AbstractCommand implements Command {
       
     } catch (Exception e) {
       out.println("작업 중 오류가 발생했습니다.");
+      e.printStackTrace();
     }
   }
 
