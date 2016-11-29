@@ -4,9 +4,11 @@ import java.io.PrintStream;
 import java.util.HashMap;
 
 import bitcamp.java89.ems.server.AbstractCommand;
+import bitcamp.java89.ems.server.annotation.Component;
 import bitcamp.java89.ems.server.dao.TeacherDao;
 import bitcamp.java89.ems.server.vo.Teacher;
 
+@Component(value="teacher/list")
 public class TeacherListController extends AbstractCommand {
   TeacherDao teacherDao;
   
@@ -29,8 +31,4 @@ public class TeacherListController extends AbstractCommand {
       } 
   }
 
-  @Override
-  public String getCommandString() {
-    return "teacher/list";
-  }
 }

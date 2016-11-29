@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import bitcamp.java89.ems.server.annotation.Component;
+
 
 public class ApplicationContext {
   HashMap<String, Object> objPool = new HashMap<String, Object>();
@@ -94,13 +96,19 @@ public class ApplicationContext {
     for (Class<?> clazz : classList) {
       try {
         Object obj = clazz.newInstance();
-        String key = null;
-        try {
-          Method m = clazz.getMethod("getCommandString");
-          key = (String)m.invoke(obj);
-        } catch (Exception e) {
-          key = clazz.getName();
+        
+        Component compAnno = clazz.getAnnotation(Component.class);
+        
+        if (compAnno.value().isEmpty()) {
+          objPool.put(clazz.getName(), obj);
+          System.out.println(clazz.getName());
+        } else {
+          objPool.put(compAnno.value(), obj);
+          System.out.println(compAnno.value());
         }
+        
+        String key = null;
+        
         objPool.put(key, obj);
       } catch (Exception e) {}
     }
@@ -136,7 +144,7 @@ public class ApplicationContext {
         try {
           Class<?> c = loadClass(file);
           
-          if (!isAbstract(c)) {
+          if (!isAbstract(c) && isComponent(c)) {
             classList.add(c);
           }
           
@@ -148,6 +156,11 @@ public class ApplicationContext {
   }
 
   
+  private boolean isComponent(Class<?> c) {
+    return c.getAnnotation(Component.class) != null;
+  }
+
+
   private boolean isAbstract(Class<?> clazz) {
     if ((clazz.getModifiers() & Modifier.ABSTRACT) == Modifier.ABSTRACT) {
       return true;
@@ -164,11 +177,4 @@ public class ApplicationContext {
     return Class.forName(path.substring(pos + 5).replaceAll("/", "."));
   }
   
-  
-  
-  
-//  public static void main(String[] args) throws Exception {
-//    ApplicationContext appContext = new ApplicationContext( new String[]
-//        {"bitcamp.java89.ems.server.controller", "bitcamp.java89.ems.server.dao"});
-//  }
 }

@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import bitcamp.java89.ems.server.AbstractCommand;
+import bitcamp.java89.ems.server.annotation.Component;
 import bitcamp.java89.ems.server.dao.ContactDao;
 import bitcamp.java89.ems.server.vo.Contact;
 
+@Component(value="contact/list")
 public class ContactListController extends AbstractCommand {
   
   ContactDao contactDao;
@@ -26,11 +28,6 @@ public class ContactListController extends AbstractCommand {
             contact.getTel(),
             contact.getEmail());
     }
-  }
-
-  @Override
-  public String getCommandString() {
-    return "contact/list";
   }
 
 }

@@ -4,8 +4,10 @@ import java.io.PrintStream;
 import java.util.HashMap;
 
 import bitcamp.java89.ems.server.AbstractCommand;
+import bitcamp.java89.ems.server.annotation.Component;
 import bitcamp.java89.ems.server.dao.ContactDao;
 
+@Component(value="contact/delete")
 public class ContactDeleteController extends AbstractCommand {
   
   ContactDao contactDao;
@@ -22,11 +24,6 @@ public class ContactDeleteController extends AbstractCommand {
 
       contactDao.delete(paramMap.get("email"));
       out.println("해당 데이터 삭제 완료하였습니다.");
-  }
-
-  @Override
-  public String getCommandString() {
-    return "contact/delete";
   }
 
 }

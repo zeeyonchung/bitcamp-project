@@ -4,9 +4,11 @@ import java.io.PrintStream;
 import java.util.HashMap;
 
 import bitcamp.java89.ems.server.AbstractCommand;
+import bitcamp.java89.ems.server.annotation.Component;
 import bitcamp.java89.ems.server.dao.ContactDao;
 import bitcamp.java89.ems.server.vo.Contact;
 
+@Component(value="contact/update")
 public class ContactUpdateController extends AbstractCommand {
 
   ContactDao contactDao;
@@ -34,8 +36,4 @@ public class ContactUpdateController extends AbstractCommand {
     out.println("변경 하였습니다.");
   }
 
-  @Override
-  public String getCommandString() {
-    return "contact/update";
-  }
 }

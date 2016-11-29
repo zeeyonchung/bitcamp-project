@@ -3,8 +3,10 @@ package bitcamp.java89.ems.server.dao;
 
 import java.util.ArrayList;
 
+import bitcamp.java89.ems.server.annotation.Component;
 import bitcamp.java89.ems.server.vo.Teacher;
 
+@Component
 public class TeacherDao extends AbstractDao<Teacher> {
   
   public TeacherDao() {

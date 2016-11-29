@@ -4,8 +4,10 @@ import java.io.PrintStream;
 import java.util.HashMap;
 
 import bitcamp.java89.ems.server.AbstractCommand;
+import bitcamp.java89.ems.server.annotation.Component;
 import bitcamp.java89.ems.server.dao.TeacherDao;
 
+@Component(value="teacher/delete")
 public class TeacherDeleteController extends AbstractCommand {
   TeacherDao teacherDao;
   
@@ -24,9 +26,5 @@ public class TeacherDeleteController extends AbstractCommand {
       teacherDao.delete(paramMap.get("name"));
       out.println("해당 데이터를 삭제했습니다.");
   }
-  
-  @Override
-  public String getCommandString() {
-    return "teacher/delete";
-  }
+
 }
