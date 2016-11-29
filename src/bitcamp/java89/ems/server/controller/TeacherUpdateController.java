@@ -3,13 +3,13 @@ package bitcamp.java89.ems.server.controller;
 import java.io.PrintStream;
 import java.util.HashMap;
 
-import bitcamp.java89.ems.server.AbstractCommand;
 import bitcamp.java89.ems.server.annotation.Component;
+import bitcamp.java89.ems.server.annotation.RequestMapping;
 import bitcamp.java89.ems.server.dao.TeacherDao;
 import bitcamp.java89.ems.server.vo.Teacher;
 
 @Component(value="teacher/update")
-public class TeacherUpdateController extends AbstractCommand {
+public class TeacherUpdateController {
   TeacherDao teacherDao;
   
   public void setTeacherDao(TeacherDao teacherDao) {
@@ -17,7 +17,8 @@ public class TeacherUpdateController extends AbstractCommand {
   }
   
   
-  public void doResponse(HashMap<String, String> paramMap, PrintStream out) throws Exception {
+  @RequestMapping
+  public void update(HashMap<String, String> paramMap, PrintStream out) throws Exception {
       if (!teacherDao.existName(paramMap.get("name"))) {
         out.println("입력하신 성함의 강사님 정보을 찾지 못했습니다.");
         return;

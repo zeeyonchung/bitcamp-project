@@ -3,21 +3,21 @@ package bitcamp.java89.ems.server.controller;
 import java.io.PrintStream;
 import java.util.HashMap;
 
-import bitcamp.java89.ems.server.AbstractCommand;
 import bitcamp.java89.ems.server.annotation.Component;
+import bitcamp.java89.ems.server.annotation.RequestMapping;
 import bitcamp.java89.ems.server.dao.TeacherDao;
 import bitcamp.java89.ems.server.vo.Teacher;
 
 @Component(value="teacher/view")
-public class TeacherViewController extends AbstractCommand {
+public class TeacherViewController {
   TeacherDao teacherDao;
   
   public void setTeacherDao(TeacherDao teacherDao) {
     this.teacherDao = teacherDao;
   }
   
-  
-  public void doResponse(HashMap<String, String> paramMap, PrintStream out) throws Exception {
+  @RequestMapping
+  public void view(HashMap<String, String> paramMap, PrintStream out) throws Exception {
       for (Teacher teacher : teacherDao.getListByName(paramMap.get("name"))) {
         if (teacher.getName().equals(paramMap.get("name"))) {
           out.printf("이름: %s\n", teacher.getName());
