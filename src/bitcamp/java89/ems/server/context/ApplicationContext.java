@@ -106,10 +106,8 @@ public class ApplicationContext {
         
         if (compAnno.value().isEmpty()) {
           objPool.put(clazz.getName(), obj);
-          //System.out.println(clazz.getName());
         } else {
           objPool.put(compAnno.value(), obj);
-          //System.out.println(compAnno.value());
         }
         
         String key = null;
