@@ -60,6 +60,7 @@ public class ApplicationContext {
         if (dependency != null) {
           try {
             m.invoke(obj, dependency);
+            System.out.printf("=> %s.%s\n", obj.getClass().getName(), m.getName());
           } catch (Exception e) {}
         }
       }
@@ -106,8 +107,10 @@ public class ApplicationContext {
         
         if (compAnno.value().isEmpty()) {
           objPool.put(clazz.getName(), obj);
+          System.out.println(clazz.getName());
         } else {
           objPool.put(compAnno.value(), obj);
+          System.out.println(compAnno.value());
         }
         
         String key = null;

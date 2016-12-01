@@ -11,7 +11,9 @@ import bitcamp.java89.ems.server.vo.Contact;
 
 @Component
 public class ContactController {
-
+  //의존 객체 Dao를 저장하기 위한 변수
+  // => 직접 클래스 이름을 명시하기보다 인터페이스 변수를 선언하는 것이
+  //    향후 확장성에 좋다. 왜? 이 변수에 다양한 객체를 넣을 수 있기 때문이다.
   ContactDao contactDao;
   
   public void setContactDao(ContactDao contactDao) {
