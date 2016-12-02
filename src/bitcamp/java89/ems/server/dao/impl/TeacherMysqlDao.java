@@ -8,18 +8,20 @@ import java.util.ArrayList;
 
 import bitcamp.java89.ems.server.annotation.Component;
 import bitcamp.java89.ems.server.dao.TeacherDao;
+import bitcamp.java89.ems.server.util.DataSource;
 import bitcamp.java89.ems.server.vo.Teacher;
 
 @Component
 public class TeacherMysqlDao implements TeacherDao {
-  Connection con;
+  DataSource ds;
 
-  public void setConnection(Connection con) {
-    this.con = con;
+  public void setDataSource(DataSource dataSource) {
+    this.ds = dataSource;
   }
-  
+
   public ArrayList<Teacher> getList() throws Exception {
     ArrayList<Teacher> list = new ArrayList<>();
+    Connection con = ds.getConnection();
 
     try (
         PreparedStatement stmt = con.prepareStatement("select * from ex_teachers");
@@ -38,13 +40,16 @@ public class TeacherMysqlDao implements TeacherDao {
         teacher.setPrize(rs.getString("prz"));
         list.add(teacher);
       }
-    } 
+    } finally {
+      ds.returnConnetion(con);
+    }
     return list;
   }
-  
-  
+
+
   public ArrayList<Teacher> getListByName(String name) throws Exception {
     ArrayList<Teacher> list = new ArrayList<>();
+    Connection con = ds.getConnection();
 
     try (
         PreparedStatement stmt = con.prepareStatement(
@@ -67,12 +72,16 @@ public class TeacherMysqlDao implements TeacherDao {
         list.add(teacher);
       }
       rs.close();
-    } 
+    } finally {
+      ds.returnConnetion(con);
+    }
     return list;
   }
-  
-  
+
+
   public void insert(Teacher teacher) throws Exception {
+    Connection con = ds.getConnection();
+
     try (
         PreparedStatement stmt = con.prepareStatement(
             "insert into ex_teachers(name,lec,jobcr,leccr,book,schl,appr,wbs,prz) values(?,?,?,?,?,?,?,?,?)"); ){
@@ -89,11 +98,15 @@ public class TeacherMysqlDao implements TeacherDao {
 
       stmt.executeUpdate();
 
+    } finally {
+      ds.returnConnetion(con);
     }
   }
 
 
-  public void delete(String name) throws Exception { //이름을 넘겨 받음.
+  public void delete(String name) throws Exception {
+    Connection con = ds.getConnection();
+
     try (
         PreparedStatement stmt = con.prepareStatement(
             "delete from ex_teachers where name=?"); ){
@@ -102,12 +115,16 @@ public class TeacherMysqlDao implements TeacherDao {
 
       stmt.executeUpdate();
 
+    } finally {
+      ds.returnConnetion(con);
     }
   }
 
 
 
   public void update(Teacher teacher) throws Exception {
+    Connection con = ds.getConnection();
+
     try (
         PreparedStatement stmt = con.prepareStatement(
             "update ex_teachers set lec=?, jobcr=?, leccr=?, book=?, schl=?, appr=?, wbs=?, prz=? where name=?"); ){
@@ -121,14 +138,17 @@ public class TeacherMysqlDao implements TeacherDao {
       stmt.setString(7, teacher.getWebsite());
       stmt.setString(8, teacher.getPrize());
       stmt.setString(9, teacher.getName());
-      
+
       stmt.executeUpdate();
 
+    } finally {
+      ds.returnConnetion(con);
     }
   }
 
-  
+
   public boolean existName(String name) throws Exception {
+    Connection con = ds.getConnection();
 
     try (
         PreparedStatement stmt = con.prepareStatement(
@@ -144,8 +164,10 @@ public class TeacherMysqlDao implements TeacherDao {
         rs.close();
         return false;
       }
-      
+
+    } finally {
+      ds.returnConnetion(con);
     }
   }
-  
+
 }
