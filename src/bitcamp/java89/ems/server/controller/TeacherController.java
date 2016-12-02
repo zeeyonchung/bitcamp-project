@@ -2,7 +2,9 @@ package bitcamp.java89.ems.server.controller;
 
 import java.io.PrintStream;
 
-import bitcamp.java89.ems.server.annotation.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import bitcamp.java89.ems.server.annotation.RequestMapping;
 import bitcamp.java89.ems.server.annotation.RequestParam;
 import bitcamp.java89.ems.server.dao.TeacherDao;
@@ -11,12 +13,7 @@ import bitcamp.java89.ems.server.vo.Teacher;
 
 @Component
 public class TeacherController {
-  TeacherDao teacherDao;
-  
-  public void setTeacherDao(TeacherDao teacherDao) {
-    this.teacherDao = teacherDao;
-  }
-  
+  @ Autowired TeacherDao teacherDao;
   
   @RequestMapping(value="teacher/add")
   public void add(

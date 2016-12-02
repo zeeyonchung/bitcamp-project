@@ -3,8 +3,11 @@
 package bitcamp.java89.ems.server;
 
 import java.net.ServerSocket;
+import java.util.ArrayList;
 
-import bitcamp.java89.ems.server.context.ApplicationContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import bitcamp.java89.ems.server.context.RequestHandlerMapping;
 
 
@@ -14,9 +17,17 @@ public class EduAppServer {
   
   
   public EduAppServer() {
-    appContext = new ApplicationContext(new String[] {"bitcamp.java89.ems.server"});
+    appContext = new ClassPathXmlApplicationContext(
+        new String[] {"bitcamp/java89/ems/server/application-context.xml"});
     
-    handlerMapping = new RequestHandlerMapping(appContext.getAllBeans());
+    String[] names = appContext.getBeanDefinitionNames();
+    ArrayList<Object> objList = new ArrayList<>();
+    for(String name : names) {
+      System.out.println(name);
+      objList.add(appContext.getBean(name));
+    }
+    
+    handlerMapping = new RequestHandlerMapping(objList);
   }
   
   //contact/add?name=1&position=2&tel=3&email=4
