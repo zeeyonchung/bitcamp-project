@@ -1,32 +1,33 @@
-
 package bitcamp.java89.ems.server.dao.impl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import bitcamp.java89.ems.server.annotation.Component;
 import bitcamp.java89.ems.server.dao.TeacherDao;
-import bitcamp.java89.ems.server.vo.Contact;
 import bitcamp.java89.ems.server.vo.Teacher;
 
 @Component
 public class TeacherMysqlDao implements TeacherDao {
+  Connection con;
+  
   
   public TeacherMysqlDao() {
-    
+    try {
+      Class.forName("com.mysql.jdbc.Driver");
+      con = DriverManager.getConnection("jdbc:mysql://localhost:3306/java89db", "java89", "1111");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
   
   public ArrayList<Teacher> getList() throws Exception {
     ArrayList<Teacher> list = new ArrayList<>();
-    Class.forName("com.mysql.jdbc.Driver");
 
     try (
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/java89db",
-            "java89", "1111");
         PreparedStatement stmt = con.prepareStatement("select * from ex_teachers");
         ResultSet rs = stmt.executeQuery(); ){
 
@@ -50,11 +51,8 @@ public class TeacherMysqlDao implements TeacherDao {
   
   public ArrayList<Teacher> getListByName(String name) throws Exception {
     ArrayList<Teacher> list = new ArrayList<>();
-    Class.forName("com.mysql.jdbc.Driver");
 
     try (
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/java89db",
-            "java89", "1111");
         PreparedStatement stmt = con.prepareStatement(
             "select * from ex_teachers where name=?"); ){
 
@@ -81,10 +79,7 @@ public class TeacherMysqlDao implements TeacherDao {
   
   
   public void insert(Teacher teacher) throws Exception {
-    Class.forName("com.mysql.jdbc.Driver");
     try (
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/java89db", 
-            "java89", "1111");
         PreparedStatement stmt = con.prepareStatement(
             "insert into ex_teachers(name,lec,jobcr,leccr,book,schl,appr,wbs,prz) values(?,?,?,?,?,?,?,?,?)"); ){
 
@@ -105,10 +100,7 @@ public class TeacherMysqlDao implements TeacherDao {
 
 
   public void delete(String name) throws Exception { //이름을 넘겨 받음.
-    Class.forName("com.mysql.jdbc.Driver");
     try (
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/java89db", 
-            "java89", "1111");
         PreparedStatement stmt = con.prepareStatement(
             "delete from ex_teachers where name=?"); ){
 
@@ -122,10 +114,7 @@ public class TeacherMysqlDao implements TeacherDao {
 
 
   public void update(Teacher teacher) throws Exception {
-    Class.forName("com.mysql.jdbc.Driver");
     try (
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/java89db", 
-            "java89", "1111");
         PreparedStatement stmt = con.prepareStatement(
             "update ex_teachers set lec=?, jobcr=?, leccr=?, book=?, schl=?, appr=?, wbs=?, prz=? where name=?"); ){
 
@@ -146,11 +135,8 @@ public class TeacherMysqlDao implements TeacherDao {
 
   
   public boolean existName(String name) throws Exception {
-    Class.forName("com.mysql.jdbc.Driver");
 
     try (
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/java89db",
-            "java89", "1111");
         PreparedStatement stmt = con.prepareStatement(
             "select * from ex_teachers where name=?"); ){
 
