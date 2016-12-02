@@ -13,15 +13,9 @@ import bitcamp.java89.ems.server.vo.Teacher;
 @Component
 public class TeacherMysqlDao implements TeacherDao {
   Connection con;
-  
-  
-  public TeacherMysqlDao() {
-    try {
-      Class.forName("com.mysql.jdbc.Driver");
-      con = DriverManager.getConnection("jdbc:mysql://localhost:3306/java89db", "java89", "1111");
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+  public void setConnection(Connection con) {
+    this.con = con;
   }
   
   public ArrayList<Teacher> getList() throws Exception {

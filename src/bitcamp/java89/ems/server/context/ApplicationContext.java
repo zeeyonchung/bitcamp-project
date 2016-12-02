@@ -14,6 +14,8 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import bitcamp.java89.ems.server.annotation.Component;
 
@@ -23,14 +25,24 @@ public class ApplicationContext {
   
   
   public ApplicationContext(String[] packages) {
-    ArrayList<Class<?>> classList = getClassList(packages);
-    
-    prepareObjects(classList);
-    
-    injectDependencies();
+    this(packages, null);
   }
   
   
+  public ApplicationContext(String[] packages, HashMap<String, Object> builtInObjMap) {
+    if (builtInObjMap != null) {
+      Set<Entry<String,Object>> entrySet = builtInObjMap.entrySet();
+      for (Entry<String,Object> entry : entrySet) {
+        objPool.put(entry.getKey(), entry.getValue());
+      }
+    }
+    
+    ArrayList<Class<?>> classList = getClassList(packages);
+    prepareObjects(classList);
+    injectDependencies();
+  }
+
+
   public Object getBean(String name) {
     return objPool.get(name);
   }

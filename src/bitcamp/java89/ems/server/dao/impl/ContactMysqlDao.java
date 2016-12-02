@@ -13,15 +13,10 @@ import bitcamp.java89.ems.server.vo.Contact;
 @Component
 public class ContactMysqlDao implements ContactDao {
   Connection con;
-  
-  
-  public ContactMysqlDao() {
-    try {
-      Class.forName("com.mysql.jdbc.Driver");
-      con = DriverManager.getConnection("jdbc:mysql://localhost:3306/java89db", "java89", "1111");
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+
+  public void setConnection(Connection con) {
+    this.con = con;
   }
 
 
